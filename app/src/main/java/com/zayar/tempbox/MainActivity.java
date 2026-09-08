@@ -8,6 +8,10 @@ import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.view.*;
 import android.widget.*;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import org.json.*;
 import java.io.*;
 import java.net.*;
@@ -49,6 +53,7 @@ public class MainActivity extends Activity {
         LinearLayout inboxCard=new LinearLayout(this);inboxCard.setOrientation(LinearLayout.VERTICAL);inboxCard.setBackground(bg(PANEL,20));LinearLayout.LayoutParams icLp=lp(-1,-2);icLp.topMargin=dp(18);root.addView(inboxCard,icLp);
         LinearLayout head=new LinearLayout(this);head.setGravity(Gravity.CENTER_VERTICAL);head.setPadding(dp(18),dp(17),dp(18),dp(15));LinearLayout heads=new LinearLayout(this);heads.setOrientation(LinearLayout.VERTICAL);TextView ih=text("Inbox",21,INK);ih.setTypeface(Typeface.DEFAULT,Typeface.BOLD);heads.addView(ih);meta=text(tr("စာဝင်လာပါက ဒီနေရာမှာ ပြပါမယ်","New messages will appear here"),12,MUTED);heads.addView(meta);head.addView(heads,new LinearLayout.LayoutParams(0,-2,1));count=text("0",13,INK);count.setGravity(Gravity.CENTER);count.setBackground(bg(Color.rgb(28,48,80),9));head.addView(count,lp(dp(34),dp(34)));inboxCard.addView(head);
         inbox=new LinearLayout(this);inbox.setOrientation(LinearLayout.VERTICAL);inbox.setPadding(dp(10),dp(12),dp(10),dp(18));inboxCard.addView(inbox);showEmpty();
+        AdView adView=new AdView(this);adView.setAdSize(AdSize.BANNER);adView.setAdUnitId("ca-app-pub-3940256099942544/9214589741");LinearLayout.LayoutParams adLp=lp(-2,-2);adLp.gravity=Gravity.CENTER_HORIZONTAL;adLp.topMargin=dp(18);root.addView(adView,adLp);new Thread(()->MobileAds.initialize(this,initializationStatus->ui.post(()->adView.loadAd(new AdRequest.Builder().build())))).start();
         copy.setOnClickListener(v->{((android.content.ClipboardManager)getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("Temp email",email.getText()));Toast.makeText(this,tr("ကူးယူပြီးပါပြီ","Email copied"),Toast.LENGTH_SHORT).show();});
         newMail.setOnClickListener(v->createMailbox());refresh.setOnClickListener(v->loadMessages());setContentView(scroll);
     }
